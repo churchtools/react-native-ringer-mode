@@ -11,4 +11,9 @@ export default class RingerMode {
 			return await RNRingerMode.getRingerMode();
 		return null;
 	}
+    static async getInterruptionFilter() {
+        if (Utils.isAndroid === true)
+            return await RNRingerMode.getInterruptionFilter();
+        return null;
+    }
 }

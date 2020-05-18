@@ -2,6 +2,7 @@
 package com.reactlibrary;
 
 import android.media.AudioManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -17,7 +18,7 @@ public class RNRingerMode extends ReactContextBaseJavaModule {
 	private static final String VOL_MUSIC = "music";
 	private static final String VOL_ALARM = "alarm";
 	private static final String VOL_NOTIFICATION = "notification";
-	
+
 	private final ReactApplicationContext reactContext;
 	private AudioManager am;
 
@@ -45,6 +46,32 @@ public class RNRingerMode extends ReactContextBaseJavaModule {
 			case AudioManager.RINGER_MODE_VIBRATE:
 				promise.resolve("VIBRATE");
 				break;
+			default:
+			    promise.resolve("UNKNOWN");
+			    break;
 		}
 	}
+
+    @ReactMethod
+    public void getInterruptionFilter(Promise promise) {
+        int filter = NotificationManager.getCurrentInterruptionFilter();
+        switch(filter) {
+            case NotificationManager.INTERRUPTION_FILTER_PRIORITY:
+                promise.resolve("PRIORITY");
+                break;
+            case NotificationManager.INTERRUPTION_FILTER_ALARMS:
+                promise.resolve("ALARMS");
+                break;
+            case NotificationManager.INTERRUPTION_FILTER_NONE:
+                promise.resolve("NONE");
+                break;
+            case NotificationManager.INTERRUPTION_FILTER_ALL:
+                promise.resolve("ALL");
+                break;
+            default:
+                promise.resolve("UNKNOWN");
+                break;
+        }
+    }
+
 }
