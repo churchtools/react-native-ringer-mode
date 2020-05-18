@@ -21,11 +21,13 @@ public class RNRingerMode extends ReactContextBaseJavaModule {
 
 	private final ReactApplicationContext reactContext;
 	private AudioManager am;
+	private NotificationManager nm;
 
 	public RNRingerMode(ReactApplicationContext reactContext) {
 		super(reactContext);
 		this.reactContext = reactContext;
 		am = (AudioManager) reactContext.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+		nm = (NotificationManager) reactContext.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
 	@Override
@@ -54,7 +56,11 @@ public class RNRingerMode extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getInterruptionFilter(Promise promise) {
-        int filter = NotificationManager.getCurrentInterruptionFilter();
+        if (nm ==  null) {
+            promise.resolve("UNKNOWN");
+            return;
+        }
+        int filter = nm.getCurrentInterruptionFilter();
         switch(filter) {
             case NotificationManager.INTERRUPTION_FILTER_PRIORITY:
                 promise.resolve("PRIORITY");
