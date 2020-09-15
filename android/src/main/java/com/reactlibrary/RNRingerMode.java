@@ -56,7 +56,7 @@ public class RNRingerMode extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getInterruptionFilter(Promise promise) {
-        if (nm ==  null) {
+        if (nm == null || android.os.Build.VERSION.SDK_INT < 23) {
             promise.resolve("UNKNOWN");
             return;
         }
